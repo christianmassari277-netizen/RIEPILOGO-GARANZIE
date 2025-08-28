@@ -1,0 +1,28 @@
+name: Build EXE
+
+on:
+  workflow_dispatch:  # Avvio manuale
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pandas reportlab pyinstaller
+
+      - name: Build exe
+        run: pyinstaller --onefile pulisci_riepilogo.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: riepilogo-exe
+          path: dist/pulisci_riepilogo.exe
